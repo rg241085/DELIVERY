@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Extract Order Details from Plain Text Paste</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <h2>Paste your order plain text here:</h2>
+  <textarea id="pasteArea" placeholder="Paste order details text here..."></textarea>
+  <button id="processBtn">Process Text</button>
+
+  <div class="tabs">
+    <div class="tab active" data-status="pending">Pending</div>
+    <div class="tab" data-status="delivered">Delivered</div>
+    <div class="tab" data-status="issue">Issue</div>
+  </div>
+
+  <div id="recordsContainer"></div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
