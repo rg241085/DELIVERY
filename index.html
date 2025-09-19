@@ -728,21 +728,34 @@
     </div>
 
     <!-- Firebase SDK imports, either via CDN or using your bundler if needed -->
-<script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-database.js"></script>
-<script>
-    // Your provided credential
-    const firebaseConfig = {
-        apiKey: "AIzaSyAVgvjAiigSewImP1TO0bxP287cBPPSb_Y",
-        authDomain: "dbms-95f8b.firebaseapp.com",
-        databaseURL: "https://dbms-95f8b-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "dbms-95f8b",
-        storageBucket: "dbms-95f8b.firebasestorage.app",
-        messagingSenderId: "482228291409",
-        appId: "1:482228291409:web:131183a92dfa7ec2033570"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js";
+  import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-database.js";
+
+  const firebaseConfig = {
+      apiKey: "AIzaSyAVgvjAiigSewImP1TO0bxP287cBPPSb_Y",
+      authDomain: "dbms-95f8b.firebaseapp.com",
+      databaseURL: "https://dbms-95f8b-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "dbms-95f8b",
+      storageBucket: "dbms-95f8b.firebasestorage.app",
+      messagingSenderId: "482228291409",
+      appId: "1:482228291409:web:131183a92dfa7ec2033570"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // Example: Push new task
+  function addTask(newTask) {
+    push(ref(db, 'deliveryTasks'), newTask);
+  }
+
+  // Example: Read tasks
+  onValue(ref(db, 'deliveryTasks'), (snapshot) => {
+    console.log(snapshot.val());
+  });
+</script>
+
 
     document.addEventListener('DOMContentLoaded', function () {
         const taskForm = document.getElementById('taskForm');
