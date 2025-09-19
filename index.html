@@ -727,409 +727,351 @@
         <span></span>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const taskForm = document.getElementById('taskForm');
-            const taskContainer = document.getElementById('taskContainer');
-            const totalTasksEl = document.getElementById('totalTasks');
-            const pendingTasksEl = document.getElementById('pendingTasks');
-            const deliveredTasksEl = document.getElementById('deliveredTasks');
+    <!-- Firebase SDK imports, either via CDN or using your bundler if needed -->
+<script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-database.js"></script>
+<script>
+    // Your provided credential
+    const firebaseConfig = {
+        apiKey: "AIzaSyAVgvjAiigSewImP1TO0bxP287cBPPSb_Y",
+        authDomain: "dbms-95f8b.firebaseapp.com",
+        databaseURL: "https://dbms-95f8b-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "dbms-95f8b",
+        storageBucket: "dbms-95f8b.firebasestorage.app",
+        messagingSenderId: "482228291409",
+        appId: "1:482228291409:web:131183a92dfa7ec2033570"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-            let tasks = JSON.parse(localStorage.getItem('deliveryTasks')) || [];
-            let currentFilter = 'all';
+    document.addEventListener('DOMContentLoaded', function () {
+        const taskForm = document.getElementById('taskForm');
+        const taskContainer = document.getElementById('taskContainer');
+        const totalTasksEl = document.getElementById('totalTasks');
+        const pendingTasksEl = document.getElementById('pendingTasks');
+        const deliveredTasksEl = document.getElementById('deliveredTasks');
 
-            // Desktop form submission
-            if (taskForm) {
-                taskForm.addEventListener('submit', function (e) {
-                    e.preventDefault();
+        let tasks = []; // Local copy for rendering
+        let currentFilter = 'all';
 
-                    const orderId = document.getElementById('orderId').value;
-                    const customerName = document.getElementById('customerName').value;
-                    const phone = document.getElementById('phone').value;
-                    const address = document.getElementById('address').value;
-                    const paymentMethod = document.getElementById('paymentMethod').value;
-                    const grandAmount = document.getElementById('grandAmount').value;
-
-                    const newTask = {
-                        id: Date.now(),
-                        orderId,
-                        customerName,
-                        phone,
-                        address,
-                        paymentMethod,
-                        grandAmount,
-                        status: 'pending',
-                        createdAt: new Date().toISOString()
-                    };
-
-                    tasks.push(newTask);
-                    saveTasks();
-                    renderTasks();
-                    updateStats();
-                    updateTabCounts();
-                    taskForm.reset();
-                    document.getElementById('amountField').style.display = 'none';
-                    showNotification('Task added successfully!');
-                });
-            }
-
-            // Save tasks
-            function saveTasks() {
-                localStorage.setItem('deliveryTasks', JSON.stringify(tasks));
-            }
-
-            // Render tasks based on current filter
-            function renderTasks() {
-                let filteredTasks = tasks;
-
-                if (currentFilter === 'pending') {
-                    filteredTasks = tasks.filter(task => task.status === 'pending');
-                } else if (currentFilter === 'delivered') {
-                    filteredTasks = tasks.filter(task => task.status === 'delivered');
-                }
-
-                if (filteredTasks.length === 0) {
-                    let emptyMessage = 'No tasks yet. Add a new delivery!';
-
-                    if (currentFilter === 'pending') {
-                        emptyMessage = 'No pending orders. Great job!';
-                    } else if (currentFilter === 'delivered') {
-                        emptyMessage = 'No delivered orders yet.';
-                    }
-
-                    taskContainer.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-inbox"></i>
-                            <p>${emptyMessage}</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                taskContainer.innerHTML = '';
-
-                filteredTasks.forEach(task => {
-                    const taskItem = document.createElement('div');
-                    taskItem.className = 'task-item';
-
-                    const statusClass = `status-${task.status}`;
-                    const statusText = {
-                        'pending': 'Pending',
-                        'delivered': 'Delivered',
-                        'cancelled': 'Cancelled'
-                    }[task.status];
-
-                    taskItem.innerHTML = `
-                        <div class="task-info">
-                            ${task.orderId ? `<p><strong>Order ID:</strong> ${task.orderId}</p>` : ''}
-                            <h3>${task.customerName} <span class="status-badge ${statusClass}">${statusText}</span></h3>
-                            <p><i class="fas fa-phone"></i> <strong>Phone:</strong> ${task.phone}</p>
-                            <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> ${task.address}</p>
-                            ${task.grandAmount && task.paymentMethod === 'COD' ? `<p><i class="fas fa-rupee-sign"></i> <strong>Amount:</strong> ₹${task.grandAmount}</p>` : ''}
-                            ${task.paymentMethod ? `<p><i class="fas fa-credit-card"></i> <strong>Payment:</strong> ${getPaymentMethodText(task.paymentMethod)}</p>` : ''}
-                        </div>
-                        <div class="task-actions">
-                            ${task.status !== 'delivered' ? `
-                                <button class="btn-small btn-success ripple" onclick="updateStatus(${task.id}, 'delivered')">
-                                    <i class="fas fa-check"></i> Mark Delivered
-                                </button>
-                            ` : ''}
-                            ${task.status !== 'cancelled' ? `
-                                <button class="btn-small btn-warning ripple desktop-only" onclick="updateStatus(${task.id}, 'cancelled')">
-                                    <i class="fas fa-times"></i> Cancel
-                                </button>
-                            ` : ''}
-                            <button class="btn-small btn-danger ripple desktop-only" onclick="deleteTask(${task.id})">
-                                <i class="fas fa-trash"></i> Delete
-                            </button>
-                            ${task.status === 'pending' ? `
-                                <a href="tel:${task.phone}" class="btn-small btn-info mobile-call-btn ripple">
-                                    <i class="fas fa-phone"></i> Call
-                                </a>
-                            ` : ''}
-                        </div>
-                    `;
-
-                    taskContainer.appendChild(taskItem);
-                });
-            }
-
-            // Update tab counts
-            function updateTabCounts() {
-                const allCount = tasks.length;
-                const pendingCount = tasks.filter(task => task.status === 'pending').length;
-                const deliveredCount = tasks.filter(task => task.status === 'delivered').length;
-
-                document.getElementById('allCount').textContent = allCount;
-                document.getElementById('pendingCount').textContent = pendingCount;
-                document.getElementById('deliveredCount').textContent = deliveredCount;
-            }
-
-            // Filter tasks based on status
-            window.filterTasks = function (filter) {
-                currentFilter = filter;
-
-                // Update active tab
-                document.querySelectorAll('.task-tab-btn').forEach(btn => btn.classList.remove('active'));
-                event.target.classList.add('active');
-
-                renderTasks();
-            };
-
-            // Get payment method text
-            function getPaymentMethodText(method) {
-                const methods = {
-                    'COD': 'Cash on Delivery',
-                    'Online': 'Online Payment',
-                    'UPI': 'UPI',
-                    'Card': 'Card'
-                };
-                return methods[method] || method;
-            }
-
-            // Update status
-            window.updateStatus = function (id, newStatus) {
-                const taskIndex = tasks.findIndex(task => task.id === id);
-                if (taskIndex !== -1) {
-                    tasks[taskIndex].status = newStatus;
-                    saveTasks();
-                    renderTasks();
-                    updateStats();
-                    updateTabCounts();
-                    showNotification('Status updated!');
-                }
-            };
-
-            // Delete task
-            window.deleteTask = function (id) {
-                if (confirm('Are you sure you want to delete this task?')) {
-                    tasks = tasks.filter(task => task.id !== id);
-                    saveTasks();
-                    renderTasks();
-                    updateStats();
-                    updateTabCounts();
-                    showNotification('Task deleted!');
-                }
-            };
-
-            // Update statistics (desktop only)
-            function updateStats() {
-                if (totalTasksEl) {
-                    const totalTasks = tasks.length;
-                    const pendingTasks = tasks.filter(task => task.status === 'pending').length;
-                    const deliveredTasks = tasks.filter(task => task.status === 'delivered').length;
-
-                    totalTasksEl.textContent = totalTasks;
-                    pendingTasksEl.textContent = pendingTasks;
-                    deliveredTasksEl.textContent = deliveredTasks;
+        // Fetch tasks in realtime from Firebase
+        db.ref('deliveryTasks').on('value', snapshot => {
+            const data = snapshot.val();
+            tasks = [];
+            if (data) {
+                for (let key in data) {
+                    tasks.push({ ...data[key], dbKey: key });
                 }
             }
-
-            // Show notification
-            function showNotification(message, isError = false) {
-                const notification = document.getElementById('notification');
-                const icon = notification.querySelector('i');
-                const text = notification.querySelector('span');
-
-                text.textContent = message;
-
-                if (isError) {
-                    notification.classList.add('error');
-                    icon.className = 'fas fa-exclamation-circle';
-                } else {
-                    notification.classList.remove('error');
-                    icon.className = 'fas fa-check-circle';
-                }
-
-                notification.classList.add('show');
-
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 3000);
-            }
-
-            // Switch tab
-            window.switchTab = function (tabName) {
-                // Hide all tab buttons and content
-                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
-                // Show selected tab
-                if (tabName === 'manual') {
-                    document.querySelector('.tab-btn:first-child').classList.add('active');
-                    document.getElementById('manualTab').classList.add('active');
-                } else {
-                    document.querySelector('.tab-btn:last-child').classList.add('active');
-                    document.getElementById('parseTab').classList.add('active');
-                }
-            };
-
-            // Toggle amount field based on payment method
-            window.toggleAmountField = function () {
-                const paymentMethod = document.getElementById('paymentMethod').value;
-                const amountField = document.getElementById('amountField');
-
-                if (paymentMethod === 'COD') {
-                    amountField.style.display = 'block';
-                } else {
-                    amountField.style.display = 'none';
-                    document.getElementById('grandAmount').value = '';
-                }
-            };
-
-            // Parse order details (desktop)
-            window.parseOrderDetails = function () {
-                const orderDetails = document.getElementById('orderDetails').value.trim();
-
-                if (!orderDetails) {
-                    showNotification('Please enter order details!', true);
-                    return;
-                }
-
-                parseOrderData(orderDetails);
-            };
-
-            // Common order parsing function
-            function parseOrderData(orderDetails) {
-                // Split data into lines
-                const lines = orderDetails.split('\n');
-
-                // Data extraction variables
-                let orderId = '';
-                let customerName = '';
-                let mobileNumber = '';
-                let address = '';
-                let grandAmount = '';
-                let paymentMethod = '';
-
-                // Flag to indicate we're in the address section
-                let inAddressSection = false;
-
-                // Parse each line
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i].trim();
-
-                    // Check if we're entering the address section
-                    if (line.includes('Shipping And Billing Address Details')) {
-                        inAddressSection = true;
-                        continue;
-                    }
-
-                    // Check if we're leaving the address section
-                    if (inAddressSection && (line.includes('Items Details') || line.includes('S.No'))) {
-                        inAddressSection = false;
-                        continue;
-                    }
-
-                    // Order Id
-                    if (line.includes('Order Id') || line.includes('Order ID')) {
-                        const parts = line.split('\t');
-                        if (parts.length > 1) {
-                            orderId = parts[1].trim();
-                        }
-                    }
-
-                    // Customer Name
-                    if (line.includes('Name') && !line.includes('Email') && !line.includes('Customer Details')) {
-                        const parts = line.split('\t');
-                        if (parts.length > 1) {
-                            customerName = parts[1].trim();
-                        }
-                    }
-
-                    // Mobile Number
-                    if (line.includes('Mobile Number')) {
-                        const parts = line.split('\t');
-                        if (parts.length > 1) {
-                            mobileNumber = parts[1].trim().replace(/\D/g, '');
-                        }
-                    }
-
-                    // Address - only extract when in address section
-                    if (inAddressSection && line.includes('Address')) {
-                        const parts = line.split('\t');
-                        if (parts.length > 1) {
-                            address = parts[1].trim();
-                        }
-                    }
-
-                    // Grand Amount
-                    if (line.includes('Grand Amount')) {
-                        const parts = line.split('\t');
-                        if (parts.length > 1) {
-                            // Remove currency symbols and other characters, keeping only numbers
-                            grandAmount = parts[1].trim().replace(/[^\d.]/g, '');
-                        }
-                    }
-
-                    // Payment Method
-                    if (line.includes('Payment Method')) {
-                        const parts = line.split('\t');
-                        if (parts.length > 1) {
-                            paymentMethod = parts[1].trim().toUpperCase();
-                        }
-                    }
-                }
-
-                // Validation
-                if (!customerName || !mobileNumber || !address) {
-                    showNotification('Required information (name, phone, address) not found!', true);
-                    return;
-                }
-
-                // Create new task
-                const newTask = {
-                    id: Date.now(),
-                    orderId,
-                    customerName,
-                    address,
-                    phone: mobileNumber,
-                    status: 'pending',
-                    grandAmount,
-                    paymentMethod,
-                    createdAt: new Date().toISOString()
-                };
-
-                tasks.push(newTask);
-                saveTasks();
-                renderTasks();
-                updateStats();
-                updateTabCounts();
-
-                // Clear textarea
-                document.getElementById('orderDetails').value = '';
-
-                showNotification('Task created successfully from order details!');
-            }
-
-            // Add ripple effect to buttons
-            document.addEventListener('click', function (e) {
-                if (e.target.classList.contains('ripple')) {
-                    const ripple = document.createElement('span');
-                    const rect = e.target.getBoundingClientRect();
-                    const size = Math.max(rect.width, rect.height);
-                    const x = e.clientX - rect.left - size / 2;
-                    const y = e.clientY - rect.top - size / 2;
-
-                    ripple.style.width = ripple.style.height = size + 'px';
-                    ripple.style.left = x + 'px';
-                    ripple.style.top = y + 'px';
-                    ripple.classList.add('ripple-effect');
-
-                    e.target.appendChild(ripple);
-
-                    setTimeout(() => {
-                        ripple.remove();
-                    }, 600);
-                }
-            });
-
-            // Initial render
             renderTasks();
             updateStats();
             updateTabCounts();
         });
-    </script>
+
+        // Desktop form submission
+        if (taskForm) {
+            taskForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const orderId = document.getElementById('orderId').value;
+                const customerName = document.getElementById('customerName').value;
+                const phone = document.getElementById('phone').value;
+                const address = document.getElementById('address').value;
+                const paymentMethod = document.getElementById('paymentMethod').value;
+                const grandAmount = document.getElementById('grandAmount').value;
+                const newTask = {
+                    orderId,
+                    customerName,
+                    phone,
+                    address,
+                    paymentMethod,
+                    grandAmount,
+                    status: 'pending',
+                    createdAt: new Date().toISOString()
+                };
+                // Write new task to Firebase
+                db.ref('deliveryTasks').push(newTask);
+                taskForm.reset();
+                document.getElementById('amountField').style.display = 'none';
+                showNotification('Task added successfully!');
+            });
+        }
+
+        // Render tasks based on current filter
+        function renderTasks() {
+            let filteredTasks = tasks;
+            if (currentFilter === 'pending') {
+                filteredTasks = tasks.filter(task => task.status === 'pending');
+            } else if (currentFilter === 'delivered') {
+                filteredTasks = tasks.filter(task => task.status === 'delivered');
+            }
+            if (filteredTasks.length === 0) {
+                let emptyMessage = 'No tasks yet. Add a new delivery!';
+                if (currentFilter === 'pending') {
+                    emptyMessage = 'No pending orders. Great job!';
+                } else if (currentFilter === 'delivered') {
+                    emptyMessage = 'No delivered orders yet.';
+                }
+                taskContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>${emptyMessage}</p>
+                    </div>
+                `;
+                return;
+            }
+            taskContainer.innerHTML = '';
+            filteredTasks.forEach(task => {
+                const taskItem = document.createElement('div');
+                taskItem.className = 'task-item';
+                const statusClass = `status-${task.status}`;
+                const statusText = {
+                    'pending': 'Pending',
+                    'delivered': 'Delivered',
+                    'cancelled': 'Cancelled'
+                }[task.status];
+                taskItem.innerHTML = `
+                    <div class="task-info">
+                        ${task.orderId ? `<p><strong>Order ID:</strong> ${task.orderId}</p>` : ''}
+                        <h3>${task.customerName} <span class="status-badge ${statusClass}">${statusText}</span></h3>
+                        <p><i class="fas fa-phone"></i> <strong>Phone:</strong> ${task.phone}</p>
+                        <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> ${task.address}</p>
+                        ${task.grandAmount && task.paymentMethod === 'COD' ? `<p><i class="fas fa-rupee-sign"></i> <strong>Amount:</strong> ₹${task.grandAmount}</p>` : ''}
+                        ${task.paymentMethod ? `<p><i class="fas fa-credit-card"></i> <strong>Payment:</strong> ${getPaymentMethodText(task.paymentMethod)}</p>` : ''}
+                    </div>
+                    <div class="task-actions">
+                        ${task.status !== 'delivered' ? `
+                            <button class="btn-small btn-success ripple" onclick="updateStatus('${task.dbKey}', 'delivered')">
+                                <i class="fas fa-check"></i> Mark Delivered
+                            </button>
+                        ` : ''}
+                        ${task.status !== 'cancelled' ? `
+                            <button class="btn-small btn-warning ripple desktop-only" onclick="updateStatus('${task.dbKey}', 'cancelled')">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        ` : ''}
+                        <button class="btn-small btn-danger ripple desktop-only" onclick="deleteTask('${task.dbKey}')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                        ${task.status === 'pending' ? `
+                            <a href="tel:${task.phone}" class="btn-small btn-info mobile-call-btn ripple">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                        ` : ''}
+                    </div>
+                `;
+                taskContainer.appendChild(taskItem);
+            });
+        }
+
+        // Update tab counts
+        function updateTabCounts() {
+            const allCount = tasks.length;
+            const pendingCount = tasks.filter(task => task.status === 'pending').length;
+            const deliveredCount = tasks.filter(task => task.status === 'delivered').length;
+            document.getElementById('allCount').textContent = allCount;
+            document.getElementById('pendingCount').textContent = pendingCount;
+            document.getElementById('deliveredCount').textContent = deliveredCount;
+        }
+
+        // Filter tasks based on status
+        window.filterTasks = function (filter) {
+            currentFilter = filter;
+            // Update active tab
+            document.querySelectorAll('.task-tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderTasks();
+        };
+
+        // Get payment method text
+        function getPaymentMethodText(method) {
+            const methods = {
+                'COD': 'Cash on Delivery',
+                'Online': 'Online Payment',
+                'UPI': 'UPI',
+                'Card': 'Card'
+            };
+            return methods[method] || method;
+        }
+
+        // Update status in Firebase
+        window.updateStatus = function (dbKey, newStatus) {
+            db.ref(`deliveryTasks/${dbKey}`).update({ status: newStatus }, (error) => {
+                if (!error) showNotification('Status updated!');
+            });
+        };
+
+        // Delete task from Firebase
+        window.deleteTask = function (dbKey) {
+            if (confirm('Are you sure you want to delete this task?')) {
+                db.ref(`deliveryTasks/${dbKey}`).remove((error) => {
+                    if (!error) showNotification('Task deleted!');
+                });
+            }
+        };
+
+        // Update statistics (desktop only)
+        function updateStats() {
+            if (totalTasksEl) {
+                const totalTasks = tasks.length;
+                const pendingTasks = tasks.filter(task => task.status === 'pending').length;
+                const deliveredTasks = tasks.filter(task => task.status === 'delivered').length;
+                totalTasksEl.textContent = totalTasks;
+                pendingTasksEl.textContent = pendingTasks;
+                deliveredTasksEl.textContent = deliveredTasks;
+            }
+        }
+
+        // Show notification
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById('notification');
+            const icon = notification.querySelector('i');
+            const text = notification.querySelector('span');
+            text.textContent = message;
+            if (isError) {
+                notification.classList.add('error');
+                icon.className = 'fas fa-exclamation-circle';
+            } else {
+                notification.classList.remove('error');
+                icon.className = 'fas fa-check-circle';
+            }
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Switch tab
+        window.switchTab = function (tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            if (tabName === 'manual') {
+                document.querySelector('.tab-btn:first-child').classList.add('active');
+                document.getElementById('manualTab').classList.add('active');
+            } else {
+                document.querySelector('.tab-btn:last-child').classList.add('active');
+                document.getElementById('parseTab').classList.add('active');
+            }
+        };
+
+        // Toggle amount field based on payment method
+        window.toggleAmountField = function () {
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const amountField = document.getElementById('amountField');
+            if (paymentMethod === 'COD') {
+                amountField.style.display = 'block';
+            } else {
+                amountField.style.display = 'none';
+                document.getElementById('grandAmount').value = '';
+            }
+        };
+
+        // Parse order details (desktop)
+        window.parseOrderDetails = function () {
+            const orderDetails = document.getElementById('orderDetails').value.trim();
+            if (!orderDetails) {
+                showNotification('Please enter order details!', true);
+                return;
+            }
+            parseOrderData(orderDetails);
+        };
+
+        // Common order parsing function
+        function parseOrderData(orderDetails) {
+            const lines = orderDetails.split('\n');
+            let orderId = '';
+            let customerName = '';
+            let mobileNumber = '';
+            let address = '';
+            let grandAmount = '';
+            let paymentMethod = '';
+            let inAddressSection = false;
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (line.includes('Shipping And Billing Address Details')) {
+                    inAddressSection = true;
+                    continue;
+                }
+                if (inAddressSection && (line.includes('Items Details') || line.includes('S.No'))) {
+                    inAddressSection = false;
+                    continue;
+                }
+                if (line.includes('Order Id') || line.includes('Order ID')) {
+                    const parts = line.split('\t');
+                    if (parts.length > 1) {
+                        orderId = parts[1].trim();
+                    }
+                }
+                if (line.includes('Name') && !line.includes('Email') && !line.includes('Customer Details')) {
+                    const parts = line.split('\t');
+                    if (parts.length > 1) {
+                        customerName = parts[1].trim();
+                    }
+                }
+                if (line.includes('Mobile Number')) {
+                    const parts = line.split('\t');
+                    if (parts.length > 1) {
+                        mobileNumber = parts[1].trim().replace(/\D/g, '');
+                    }
+                }
+                if (inAddressSection && line.includes('Address')) {
+                    const parts = line.split('\t');
+                    if (parts.length > 1) {
+                        address = parts[1].trim();
+                    }
+                }
+                if (line.includes('Grand Amount')) {
+                    const parts = line.split('\t');
+                    if (parts.length > 1) {
+                        grandAmount = parts[1].trim().replace(/[^\d.]/g, '');
+                    }
+                }
+                if (line.includes('Payment Method')) {
+                    const parts = line.split('\t');
+                    if (parts.length > 1) {
+                        paymentMethod = parts[1].trim().toUpperCase();
+                    }
+                }
+            }
+            if (!customerName || !mobileNumber || !address) {
+                showNotification('Required information (name, phone, address) not found!', true);
+                return;
+            }
+            const newTask = {
+                orderId,
+                customerName,
+                address,
+                phone: mobileNumber,
+                status: 'pending',
+                grandAmount,
+                paymentMethod,
+                createdAt: new Date().toISOString()
+            };
+            db.ref('deliveryTasks').push(newTask);
+            document.getElementById('orderDetails').value = '';
+            showNotification('Task created successfully from order details!');
+        }
+
+        // Ripple effect on buttons
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('ripple')) {
+                const ripple = document.createElement('span');
+                const rect = e.target.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple-effect');
+                e.target.appendChild(ripple);
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            }
+        });
+    });
+</script>
+
 </body>
 
 </html>
