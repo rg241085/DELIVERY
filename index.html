@@ -2,15 +2,16 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Delivery Boy Task Manager</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ---------- (आपका पूरा CSS वही रखा गया है) ---------- */
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            box-sizing: border-box
         }
 
         :root {
@@ -22,8 +23,8 @@
             --info-color: #17a2b8;
             --light-bg: #f8f9fa;
             --white: #ffffff;
-            --text-primary: #333333;
-            --text-secondary: #666666;
+            --text-primary: #333;
+            --text-secondary: #666;
             --border-color: #e9ecef;
             --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -40,7 +41,6 @@
             overflow-x: hidden;
         }
 
-        /* Animated background */
         body::before {
             content: '';
             position: fixed;
@@ -67,12 +67,12 @@
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(30px)
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0)
             }
         }
 
@@ -82,7 +82,7 @@
             padding: 25px;
             text-align: center;
             position: relative;
-            overflow: hidden;
+            overflow: hidden
         }
 
         .header::before {
@@ -93,7 +93,7 @@
             width: 200%;
             height: 200%;
             background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-            animation: pulse 3s ease-in-out infinite;
+            animation: pulse 3s ease-in-out infinite
         }
 
         @keyframes pulse {
@@ -101,12 +101,12 @@
             0%,
             100% {
                 transform: scale(1);
-                opacity: 0.5;
+                opacity: 0.5
             }
 
             50% {
                 transform: scale(1.1);
-                opacity: 0.3;
+                opacity: 0.3
             }
         }
 
@@ -116,18 +116,18 @@
             font-weight: 700;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
             position: relative;
-            z-index: 1;
+            z-index: 1
         }
 
         .header p {
             font-size: 1.1rem;
             opacity: 0.95;
             position: relative;
-            z-index: 1;
+            z-index: 1
         }
 
         .content {
-            padding: 25px;
+            padding: 25px
         }
 
         .task-form {
@@ -137,16 +137,16 @@
             margin-bottom: 30px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-sm);
-            transition: var(--transition);
+            transition: var(--transition)
         }
 
         .task-form:hover {
             box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
+            transform: translateY(-2px)
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 15px
         }
 
         .form-group label {
@@ -156,7 +156,7 @@
             color: var(--text-primary);
             font-size: 0.95rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.5px
         }
 
         .form-group input,
@@ -168,7 +168,7 @@
             border-radius: 8px;
             font-size: 1rem;
             transition: var(--transition);
-            background: var(--white);
+            background: var(--white)
         }
 
         .form-group input:focus,
@@ -176,13 +176,13 @@
         .form-group textarea:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1)
         }
 
         .form-group textarea {
             resize: vertical;
             min-height: 120px;
-            font-family: 'Monaco', 'Consolas', monospace;
+            font-family: 'Monaco', 'Consolas', monospace
         }
 
         .btn {
@@ -199,7 +199,7 @@
             overflow: hidden;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 8px
         }
 
         .btn::before {
@@ -210,51 +210,51 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
+            transition: left 0.5s
         }
 
         .btn:hover::before {
-            left: 100%;
+            left: 100%
         }
 
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15)
         }
 
         .btn:active {
-            transform: translateY(-1px);
+            transform: translateY(-1px)
         }
 
         .btn-secondary {
-            background: linear-gradient(45deg, #36d1dc 0%, #5b86e5 100%);
+            background: linear-gradient(45deg, #36d1dc 0%, #5b86e5 100%)
         }
 
         .btn-success {
-            background: var(--success-color);
+            background: var(--success-color)
         }
 
         .btn-warning {
             background: var(--warning-color);
-            color: var(--text-primary);
+            color: var(--text-primary)
         }
 
         .btn-danger {
-            background: var(--danger-color);
+            background: var(--danger-color)
         }
 
         .btn-info {
-            background: var(--info-color);
+            background: var(--info-color)
         }
 
         .btn-small {
             padding: 6px 12px;
             font-size: 0.9rem;
-            border-radius: 6px;
+            border-radius: 6px
         }
 
         .task-list {
-            margin-top: 30px;
+            margin-top: 30px
         }
 
         .task-list h2 {
@@ -263,7 +263,7 @@
             padding-bottom: 10px;
             border-bottom: 2px solid var(--border-color);
             font-size: 1.8rem;
-            font-weight: 700;
+            font-weight: 700
         }
 
         .task-item {
@@ -277,7 +277,7 @@
             align-items: center;
             transition: var(--transition);
             position: relative;
-            overflow: hidden;
+            overflow: hidden
         }
 
         .task-item::before {
@@ -289,20 +289,20 @@
             height: 100%;
             background: var(--primary-gradient);
             transform: scaleY(0);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease
         }
 
         .task-item:hover::before {
-            transform: scaleY(1);
+            transform: scaleY(1)
         }
 
         .task-item:hover {
             box-shadow: var(--shadow-md);
-            transform: translateX(5px);
+            transform: translateX(5px)
         }
 
         .task-info {
-            flex: 1;
+            flex: 1
         }
 
         .task-info h3 {
@@ -312,7 +312,7 @@
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 10px
         }
 
         .task-info p {
@@ -321,18 +321,18 @@
             font-size: 0.95rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 8px
         }
 
         .task-info p i {
             width: 16px;
-            color: #667eea;
+            color: #667eea
         }
 
         .task-actions {
             display: flex;
             gap: 10px;
-            flex-wrap: wrap;
+            flex-wrap: wrap
         }
 
         .status-badge {
@@ -341,38 +341,38 @@
             font-size: 0.8rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.5px
         }
 
         .status-pending {
             background: #fff3cd;
-            color: #856404;
+            color: #856404
         }
 
         .status-delivered {
             background: #d4edda;
-            color: #155724;
+            color: #155724
         }
 
         .status-cancelled {
             background: #f8d7da;
-            color: #721c24;
+            color: #721c24
         }
 
         .empty-state {
             text-align: center;
             padding: 40px;
-            color: var(--text-secondary);
+            color: var(--text-secondary)
         }
 
         .empty-state i {
             font-size: 3rem;
             color: #ddd;
-            margin-bottom: 15px;
+            margin-bottom: 15px
         }
 
         .empty-state p {
-            font-size: 1.1rem;
+            font-size: 1.1rem
         }
 
         .stats {
@@ -382,12 +382,12 @@
             background: var(--light-bg);
             padding: 15px;
             border-radius: 8px;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-sm)
         }
 
         .stat-item {
             text-align: center;
-            padding: 0 10px;
+            padding: 0 10px
         }
 
         .stat-value {
@@ -397,7 +397,7 @@
             margin-bottom: 5px;
             background: var(--primary-gradient);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-text-fill-color: transparent
         }
 
         .stat-label {
@@ -405,7 +405,7 @@
             font-size: 0.9rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.5px
         }
 
         .notification {
@@ -424,22 +424,22 @@
             align-items: center;
             gap: 10px;
             font-weight: 600;
-            border-left: 4px solid var(--success-color);
+            border-left: 4px solid var(--success-color)
         }
 
         .notification.show {
-            transform: translateX(0);
+            transform: translateX(0)
         }
 
         .notification.error {
             color: var(--danger-color);
-            border-left-color: var(--danger-color);
+            border-left-color: var(--danger-color)
         }
 
         .form-tabs {
             display: flex;
             margin-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
+            border-bottom: 2px solid var(--border-color)
         }
 
         .tab-btn {
@@ -451,30 +451,30 @@
             font-weight: 600;
             color: var(--text-secondary);
             transition: var(--transition);
-            border-bottom: 3px solid transparent;
+            border-bottom: 3px solid transparent
         }
 
         .tab-btn.active {
             color: #667eea;
-            border-bottom-color: #667eea;
+            border-bottom-color: #667eea
         }
 
         .tab-content {
-            display: none;
+            display: none
         }
 
         .tab-content.active {
-            display: block;
+            display: block
         }
 
         .amount-field {
-            display: none;
+            display: none
         }
 
         .task-tabs {
             display: flex;
             margin-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
+            border-bottom: 2px solid var(--border-color)
         }
 
         .task-tab-btn {
@@ -488,12 +488,12 @@
             color: var(--text-secondary);
             transition: var(--transition);
             border-bottom: 3px solid transparent;
-            text-align: center;
+            text-align: center
         }
 
         .task-tab-btn.active {
             color: #667eea;
-            border-bottom-color: #667eea;
+            border-bottom-color: #667eea
         }
 
         .task-tab-count {
@@ -502,56 +502,53 @@
             border-radius: 12px;
             padding: 2px 8px;
             margin-left: 5px;
-            font-size: 0.8rem;
+            font-size: 0.8rem
         }
 
-        /* Desktop specific styles */
         .desktop-only {
-            display: block;
+            display: block
         }
 
         .mobile-call-btn {
-            display: none;
+            display: none
         }
 
-        /* Mobile styles */
-        @media (max-width: 767px) {
+        @media(max-width:767px) {
             body {
-                padding: 10px;
+                padding: 10px
             }
 
             .container {
                 border-radius: 10px;
-                box-shadow: var(--shadow-md);
+                box-shadow: var(--shadow-md)
             }
 
             .header {
                 padding: 15px;
-                border-radius: 10px 10px 0 0;
+                border-radius: 10px 10px 0 0
             }
 
             .header h1 {
-                font-size: 1.8rem;
+                font-size: 1.8rem
             }
 
             .header p {
-                font-size: 0.9rem;
+                font-size: 0.9rem
             }
 
             .content {
-                padding: 15px;
+                padding: 15px
             }
 
-            /* Hide desktop elements */
             .task-form,
             .stats,
             .desktop-only {
-                display: none !important;
+                display: none !important
             }
 
             .task-item {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: flex-start
             }
 
             .task-actions {
@@ -559,30 +556,29 @@
                 width: 100%;
                 display: flex;
                 flex-direction: column;
-                gap: 8px;
+                gap: 8px
             }
 
             .mobile-call-btn {
                 display: flex;
-                width: 100%;
+                width: 100%
             }
 
             .notification {
                 left: 20px;
                 right: 20px;
                 transform: translateY(-100px);
-                text-align: center;
+                text-align: center
             }
 
             .notification.show {
-                transform: translateY(0);
+                transform: translateY(0)
             }
         }
 
-        /* Ripple effect */
         .ripple {
             position: relative;
-            overflow: hidden;
+            overflow: hidden
         }
 
         .ripple::before {
@@ -595,12 +591,33 @@
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.5);
             transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
+            transition: width 0.6s, height 0.6s
         }
 
         .ripple:active::before {
             width: 300px;
-            height: 300px;
+            height: 300px
+        }
+
+        /* small ripple-effect span style */
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(1);
+            opacity: 0.6;
+            pointer-events: none;
+            animation: ripple-fade 0.6s ease-out
+        }
+
+        @keyframes ripple-fade {
+            0% {
+                opacity: 0.6
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(2)
+            }
         }
     </style>
 </head>
@@ -613,7 +630,6 @@
         </div>
 
         <div class="content">
-            <!-- Desktop: Show form and stats -->
             <div class="desktop-only">
                 <div class="task-form">
                     <h2>Add New Delivery</h2>
@@ -696,18 +712,17 @@
                 </div>
             </div>
 
-            <!-- Common: Task list for both mobile and desktop -->
             <div class="task-list">
                 <h2>Delivery Task List</h2>
 
                 <div class="task-tabs">
-                    <button class="task-tab-btn active" onclick="filterTasks('all')">
+                    <button class="task-tab-btn active" data-filter="all" onclick="filterTasks('all')">
                         All Orders <span class="task-tab-count" id="allCount">0</span>
                     </button>
-                    <button class="task-tab-btn" onclick="filterTasks('pending')">
+                    <button class="task-tab-btn" data-filter="pending" onclick="filterTasks('pending')">
                         Pending Orders <span class="task-tab-count" id="pendingCount">0</span>
                     </button>
-                    <button class="task-tab-btn" onclick="filterTasks('delivered')">
+                    <button class="task-tab-btn" data-filter="delivered" onclick="filterTasks('delivered')">
                         Delivered Orders <span class="task-tab-count" id="deliveredCount">0</span>
                     </button>
                 </div>
@@ -727,364 +742,340 @@
         <span></span>
     </div>
 
-    <!-- Firebase SDK imports, either via CDN or using your bundler if needed -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js";
-  import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-database.js";
+    <!-- Firebase + App logic (all inside single module script) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js";
+        import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-database.js";
 
-  const firebaseConfig = {
-      apiKey: "AIzaSyAVgvjAiigSewImP1TO0bxP287cBPPSb_Y",
-      authDomain: "dbms-95f8b.firebaseapp.com",
-      databaseURL: "https://dbms-95f8b-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "dbms-95f8b",
-      storageBucket: "dbms-95f8b.firebasestorage.app",
-      messagingSenderId: "482228291409",
-      appId: "1:482228291409:web:131183a92dfa7ec2033570"
-  };
+        // ====== Firebase config - verify storageBucket if needed ======
+        const firebaseConfig = {
+            apiKey: "AIzaSyAVgvjAiigSewImP1TO0bxP287cBPPSb_Y",
+            authDomain: "dbms-95f8b.firebaseapp.com",
+            databaseURL: "https://dbms-95f8b-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "dbms-95f8b",
+            storageBucket: "dbms-95f8b.firebasestorage.app", // <-- check in console if it's like *.appspot.com
+            messagingSenderId: "482228291409",
+            appId: "1:482228291409:web:131183a92dfa7ec2033570"
+        };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-  // Example: Push new task
-  function addTask(newTask) {
-    push(ref(db, 'deliveryTasks'), newTask);
-  }
+        // ----- App logic -----
+        document.addEventListener('DOMContentLoaded', () => {
+            const taskForm = document.getElementById('taskForm');
+            const taskContainer = document.getElementById('taskContainer');
+            const totalTasksEl = document.getElementById('totalTasks');
+            const pendingTasksEl = document.getElementById('pendingTasks');
+            const deliveredTasksEl = document.getElementById('deliveredTasks');
 
-  // Example: Read tasks
-  onValue(ref(db, 'deliveryTasks'), (snapshot) => {
-    console.log(snapshot.val());
-  });
-</script>
+            let tasks = [];
+            let currentFilter = 'all';
 
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const taskForm = document.getElementById('taskForm');
-        const taskContainer = document.getElementById('taskContainer');
-        const totalTasksEl = document.getElementById('totalTasks');
-        const pendingTasksEl = document.getElementById('pendingTasks');
-        const deliveredTasksEl = document.getElementById('deliveredTasks');
-
-        let tasks = []; // Local copy for rendering
-        let currentFilter = 'all';
-
-        // Fetch tasks in realtime from Firebase
-        db.ref('deliveryTasks').on('value', snapshot => {
-            const data = snapshot.val();
-            tasks = [];
-            if (data) {
-                for (let key in data) {
-                    tasks.push({ ...data[key], dbKey: key });
+            // Realtime listener
+            onValue(ref(db, 'deliveryTasks'), (snapshot) => {
+                const data = snapshot.val();
+                tasks = [];
+                if (data) {
+                    Object.keys(data).forEach(key => {
+                        tasks.push({ ...data[key], dbKey: key });
+                    });
                 }
-            }
-            renderTasks();
-            updateStats();
-            updateTabCounts();
-        });
+                renderTasks();
+                updateStats();
+                updateTabCounts();
+            });
 
-        // Desktop form submission
-        if (taskForm) {
-            taskForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-                const orderId = document.getElementById('orderId').value;
-                const customerName = document.getElementById('customerName').value;
-                const phone = document.getElementById('phone').value;
-                const address = document.getElementById('address').value;
+            // Form submit
+            if (taskForm) {
+                taskForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const orderId = document.getElementById('orderId').value.trim();
+                    const customerName = document.getElementById('customerName').value.trim();
+                    const phone = document.getElementById('phone').value.trim().replace(/\D/g, '');
+                    const address = document.getElementById('address').value.trim();
+                    const paymentMethod = document.getElementById('paymentMethod').value;
+                    const grandAmount = document.getElementById('grandAmount').value;
+
+                    if (!customerName || !phone || !address) {
+                        showNotification('Please fill name, phone and address', true);
+                        return;
+                    }
+
+                    const newTask = {
+                        orderId,
+                        customerName,
+                        phone,
+                        address,
+                        paymentMethod,
+                        grandAmount,
+                        status: 'pending',
+                        createdAt: new Date().toISOString()
+                    };
+
+                    push(ref(db, 'deliveryTasks'), newTask)
+                        .then(() => {
+                            taskForm.reset();
+                            document.getElementById('amountField').style.display = 'none';
+                            showNotification('Task added successfully!');
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            showNotification('Failed to add task', true);
+                        });
+                });
+            }
+
+            // Render tasks
+            function renderTasks() {
+                let filtered = tasks;
+                if (currentFilter === 'pending') filtered = tasks.filter(t => t.status === 'pending');
+                else if (currentFilter === 'delivered') filtered = tasks.filter(t => t.status === 'delivered');
+
+                if (!filtered || filtered.length === 0) {
+                    let emptyMessage = 'No tasks yet. Add a new delivery!';
+                    if (currentFilter === 'pending') emptyMessage = 'No pending orders. Great job!';
+                    else if (currentFilter === 'delivered') emptyMessage = 'No delivered orders yet.';
+                    taskContainer.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i><p>${emptyMessage}</p></div>`;
+                    return;
+                }
+
+                taskContainer.innerHTML = '';
+                filtered.forEach(task => {
+                    const taskItem = document.createElement('div');
+                    taskItem.className = 'task-item';
+
+                    const statusClass = `status-${task.status}`;
+                    const statusText = { 'pending': 'Pending', 'delivered': 'Delivered', 'cancelled': 'Cancelled' }[task.status] || task.status;
+
+                    taskItem.innerHTML = `
+            <div class="task-info">
+              ${task.orderId ? `<p><strong>Order ID:</strong> ${escapeHtml(task.orderId)}</p>` : ''}
+              <h3>${escapeHtml(task.customerName)} <span class="status-badge ${statusClass}">${statusText}</span></h3>
+              <p><i class="fas fa-phone"></i> <strong>Phone:</strong> ${escapeHtml(task.phone)}</p>
+              <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> ${escapeHtml(task.address)}</p>
+              ${task.grandAmount && task.paymentMethod === 'COD' ? `<p><i class="fas fa-rupee-sign"></i> <strong>Amount:</strong> ₹${escapeHtml(task.grandAmount)}</p>` : ''}
+              ${task.paymentMethod ? `<p><i class="fas fa-credit-card"></i> <strong>Payment:</strong> ${getPaymentMethodText(task.paymentMethod)}</p>` : ''}
+            </div>
+            <div class="task-actions">
+              ${task.status !== 'delivered' ? `<button class="btn-small btn-success ripple" data-key="${task.dbKey}" data-action="deliver"><i class="fas fa-check"></i> Mark Delivered</button>` : ''}
+              ${task.status !== 'cancelled' ? `<button class="btn-small btn-warning ripple desktop-only" data-key="${task.dbKey}" data-action="cancel"><i class="fas fa-times"></i> Cancel</button>` : ''}
+              <button class="btn-small btn-danger ripple desktop-only" data-key="${task.dbKey}" data-action="delete"><i class="fas fa-trash"></i> Delete</button>
+              ${task.status === 'pending' ? `<a href="tel:${encodeURI(task.phone)}" class="btn-small btn-info mobile-call-btn ripple"><i class="fas fa-phone"></i> Call</a>` : ''}
+            </div>
+          `;
+                    taskContainer.appendChild(taskItem);
+                });
+            }
+
+            // Event delegation for dynamic action buttons (deliver/cancel/delete)
+            document.addEventListener('click', (ev) => {
+                const btn = ev.target.closest('[data-action]');
+                if (!btn) return;
+                const key = btn.getAttribute('data-key');
+                const action = btn.getAttribute('data-action');
+                if (action === 'deliver') window.updateStatus(key, 'delivered');
+                else if (action === 'cancel') window.updateStatus(key, 'cancelled');
+                else if (action === 'delete') window.deleteTask(key);
+            });
+
+            // Update tab counts
+            function updateTabCounts() {
+                const allCount = tasks.length;
+                const pendingCount = tasks.filter(t => t.status === 'pending').length;
+                const deliveredCount = tasks.filter(t => t.status === 'delivered').length;
+                document.getElementById('allCount').textContent = allCount;
+                document.getElementById('pendingCount').textContent = pendingCount;
+                document.getElementById('deliveredCount').textContent = deliveredCount;
+            }
+
+            // Filter tasks (updates active button)
+            window.filterTasks = function (filter) {
+                currentFilter = filter;
+                // update active class using data-filter attribute
+                document.querySelectorAll('.task-tab-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.filter === filter);
+                });
+                renderTasks();
+            };
+
+            // Payment method text
+            function getPaymentMethodText(method) {
+                const methods = { 'COD': 'Cash on Delivery', 'Online': 'Online Payment', 'UPI': 'UPI', 'Card': 'Card' };
+                return methods[method] || method;
+            }
+
+            // Update status in Firebase
+            window.updateStatus = function (dbKey, newStatus) {
+                if (!dbKey) return;
+                update(ref(db, `deliveryTasks/${dbKey}`), { status: newStatus })
+                    .then(() => showNotification('Status updated!'))
+                    .catch(err => { console.error(err); showNotification('Failed to update status', true); });
+            };
+
+            // Delete task
+            window.deleteTask = function (dbKey) {
+                if (!dbKey) return;
+                if (!confirm('Are you sure you want to delete this task?')) return;
+                remove(ref(db, `deliveryTasks/${dbKey}`))
+                    .then(() => showNotification('Task deleted!'))
+                    .catch(err => { console.error(err); showNotification('Failed to delete task', true); });
+            };
+
+            // Stats update
+            function updateStats() {
+                const totalTasks = tasks.length;
+                const pendingTasks = tasks.filter(t => t.status === 'pending').length;
+                const deliveredTasks = tasks.filter(t => t.status === 'delivered').length;
+                if (totalTasksEl) totalTasksEl.textContent = totalTasks;
+                if (pendingTasksEl) pendingTasksEl.textContent = pendingTasks;
+                if (deliveredTasksEl) deliveredTasksEl.textContent = deliveredTasks;
+            }
+
+            // Notification
+            window.showNotification = function (message, isError = false) {
+                const notification = document.getElementById('notification');
+                const icon = notification.querySelector('i');
+                const text = notification.querySelector('span');
+                text.textContent = message;
+                if (isError) {
+                    notification.classList.add('error');
+                    icon.className = 'fas fa-exclamation-circle';
+                } else {
+                    notification.classList.remove('error');
+                    icon.className = 'fas fa-check-circle';
+                }
+                notification.classList.add('show');
+                setTimeout(() => notification.classList.remove('show'), 3000);
+            };
+
+            // Tab switching
+            window.switchTab = function (tabName) {
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                if (tabName === 'manual') {
+                    document.querySelector('.tab-btn:first-child').classList.add('active');
+                    document.getElementById('manualTab').classList.add('active');
+                } else {
+                    document.querySelector('.tab-btn:last-child').classList.add('active');
+                    document.getElementById('parseTab').classList.add('active');
+                }
+            };
+
+            // Toggle amount field
+            window.toggleAmountField = function () {
                 const paymentMethod = document.getElementById('paymentMethod').value;
-                const grandAmount = document.getElementById('grandAmount').value;
+                const amountField = document.getElementById('amountField');
+                if (paymentMethod === 'COD') amountField.style.display = 'block';
+                else {
+                    amountField.style.display = 'none';
+                    const ga = document.getElementById('grandAmount');
+                    if (ga) ga.value = '';
+                }
+            };
+
+            // Parse order details
+            window.parseOrderDetails = function () {
+                const orderDetails = document.getElementById('orderDetails').value.trim();
+                if (!orderDetails) {
+                    showNotification('Please enter order details!', true);
+                    return;
+                }
+                parseOrderData(orderDetails);
+            };
+
+            function parseOrderData(orderDetails) {
+                const lines = orderDetails.split('\n');
+                let orderId = '', customerName = '', mobileNumber = '', address = '', grandAmount = '', paymentMethod = '';
+                let inAddressSection = false;
+
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    if (line.includes('Shipping And Billing Address Details')) { inAddressSection = true; continue; }
+                    if (inAddressSection && (line.includes('Items Details') || line.includes('S.No'))) { inAddressSection = false; continue; }
+
+                    if (line.toLowerCase().includes('order id') || line.toLowerCase().includes('order id')) {
+                        const parts = line.split(/\t|:|-/);
+                        if (parts.length > 1) orderId = parts[1].trim();
+                    }
+                    if (line.toLowerCase().startsWith('name') && !line.toLowerCase().includes('email')) {
+                        const parts = line.split(/\t|:|-/);
+                        if (parts.length > 1) customerName = parts[1].trim();
+                    }
+                    if (line.toLowerCase().includes('mobile') || line.toLowerCase().includes('phone')) {
+                        const parts = line.split(/\t|:|-/);
+                        if (parts.length > 1) mobileNumber = parts[1].trim().replace(/\D/g, '');
+                    }
+                    if (inAddressSection && line.toLowerCase().includes('address')) {
+                        const parts = line.split(/\t|:|-/);
+                        if (parts.length > 1) address = parts[1].trim();
+                    }
+                    if (line.toLowerCase().includes('grand amount')) {
+                        const parts = line.split(/\t|:|-/);
+                        if (parts.length > 1) grandAmount = parts[1].trim().replace(/[^\d.]/g, '');
+                    }
+                    if (line.toLowerCase().includes('payment method')) {
+                        const parts = line.split(/\t|:|-/);
+                        if (parts.length > 1) paymentMethod = parts[1].trim().toUpperCase();
+                    }
+                }
+
+                if (!customerName || !mobileNumber || !address) {
+                    showNotification('Required information (name, phone, address) not found!', true);
+                    return;
+                }
+
                 const newTask = {
                     orderId,
                     customerName,
-                    phone,
                     address,
-                    paymentMethod,
-                    grandAmount,
+                    phone: mobileNumber,
                     status: 'pending',
+                    grandAmount,
+                    paymentMethod,
                     createdAt: new Date().toISOString()
                 };
-                // Write new task to Firebase
-                db.ref('deliveryTasks').push(newTask);
-                taskForm.reset();
-                document.getElementById('amountField').style.display = 'none';
-                showNotification('Task added successfully!');
-            });
-        }
 
-        // Render tasks based on current filter
-        function renderTasks() {
-            let filteredTasks = tasks;
-            if (currentFilter === 'pending') {
-                filteredTasks = tasks.filter(task => task.status === 'pending');
-            } else if (currentFilter === 'delivered') {
-                filteredTasks = tasks.filter(task => task.status === 'delivered');
+                push(ref(db, 'deliveryTasks'), newTask)
+                    .then(() => {
+                        document.getElementById('orderDetails').value = '';
+                        showNotification('Task created successfully from order details!');
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        showNotification('Failed to create task', true);
+                    });
             }
-            if (filteredTasks.length === 0) {
-                let emptyMessage = 'No tasks yet. Add a new delivery!';
-                if (currentFilter === 'pending') {
-                    emptyMessage = 'No pending orders. Great job!';
-                } else if (currentFilter === 'delivered') {
-                    emptyMessage = 'No delivered orders yet.';
+
+            // Ripple effect handler for buttons
+            document.addEventListener('click', function (e) {
+                const target = e.target.closest('.ripple') || e.target;
+                if (!target) return;
+                if (target.classList && target.classList.contains('ripple')) {
+                    const ripple = document.createElement('span');
+                    const rect = target.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple-effect');
+                    target.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 600);
                 }
-                taskContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-inbox"></i>
-                        <p>${emptyMessage}</p>
-                    </div>
-                `;
-                return;
-            }
-            taskContainer.innerHTML = '';
-            filteredTasks.forEach(task => {
-                const taskItem = document.createElement('div');
-                taskItem.className = 'task-item';
-                const statusClass = `status-${task.status}`;
-                const statusText = {
-                    'pending': 'Pending',
-                    'delivered': 'Delivered',
-                    'cancelled': 'Cancelled'
-                }[task.status];
-                taskItem.innerHTML = `
-                    <div class="task-info">
-                        ${task.orderId ? `<p><strong>Order ID:</strong> ${task.orderId}</p>` : ''}
-                        <h3>${task.customerName} <span class="status-badge ${statusClass}">${statusText}</span></h3>
-                        <p><i class="fas fa-phone"></i> <strong>Phone:</strong> ${task.phone}</p>
-                        <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> ${task.address}</p>
-                        ${task.grandAmount && task.paymentMethod === 'COD' ? `<p><i class="fas fa-rupee-sign"></i> <strong>Amount:</strong> ₹${task.grandAmount}</p>` : ''}
-                        ${task.paymentMethod ? `<p><i class="fas fa-credit-card"></i> <strong>Payment:</strong> ${getPaymentMethodText(task.paymentMethod)}</p>` : ''}
-                    </div>
-                    <div class="task-actions">
-                        ${task.status !== 'delivered' ? `
-                            <button class="btn-small btn-success ripple" onclick="updateStatus('${task.dbKey}', 'delivered')">
-                                <i class="fas fa-check"></i> Mark Delivered
-                            </button>
-                        ` : ''}
-                        ${task.status !== 'cancelled' ? `
-                            <button class="btn-small btn-warning ripple desktop-only" onclick="updateStatus('${task.dbKey}', 'cancelled')">
-                                <i class="fas fa-times"></i> Cancel
-                            </button>
-                        ` : ''}
-                        <button class="btn-small btn-danger ripple desktop-only" onclick="deleteTask('${task.dbKey}')">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                        ${task.status === 'pending' ? `
-                            <a href="tel:${task.phone}" class="btn-small btn-info mobile-call-btn ripple">
-                                <i class="fas fa-phone"></i> Call
-                            </a>
-                        ` : ''}
-                    </div>
-                `;
-                taskContainer.appendChild(taskItem);
             });
-        }
 
-        // Update tab counts
-        function updateTabCounts() {
-            const allCount = tasks.length;
-            const pendingCount = tasks.filter(task => task.status === 'pending').length;
-            const deliveredCount = tasks.filter(task => task.status === 'delivered').length;
-            document.getElementById('allCount').textContent = allCount;
-            document.getElementById('pendingCount').textContent = pendingCount;
-            document.getElementById('deliveredCount').textContent = deliveredCount;
-        }
-
-        // Filter tasks based on status
-        window.filterTasks = function (filter) {
-            currentFilter = filter;
-            // Update active tab
-            document.querySelectorAll('.task-tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            renderTasks();
-        };
-
-        // Get payment method text
-        function getPaymentMethodText(method) {
-            const methods = {
-                'COD': 'Cash on Delivery',
-                'Online': 'Online Payment',
-                'UPI': 'UPI',
-                'Card': 'Card'
-            };
-            return methods[method] || method;
-        }
-
-        // Update status in Firebase
-        window.updateStatus = function (dbKey, newStatus) {
-            db.ref(`deliveryTasks/${dbKey}`).update({ status: newStatus }, (error) => {
-                if (!error) showNotification('Status updated!');
-            });
-        };
-
-        // Delete task from Firebase
-        window.deleteTask = function (dbKey) {
-            if (confirm('Are you sure you want to delete this task?')) {
-                db.ref(`deliveryTasks/${dbKey}`).remove((error) => {
-                    if (!error) showNotification('Task deleted!');
+            // small helper to escape HTML in inserted strings
+            function escapeHtml(str) {
+                if (!str && str !== 0) return '';
+                return String(str).replace(/[&<>"'`=\/]/g, function (s) {
+                    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;', '`': '&#x60;', '=': '&#x3D;' })[s];
                 });
             }
-        };
-
-        // Update statistics (desktop only)
-        function updateStats() {
-            if (totalTasksEl) {
-                const totalTasks = tasks.length;
-                const pendingTasks = tasks.filter(task => task.status === 'pending').length;
-                const deliveredTasks = tasks.filter(task => task.status === 'delivered').length;
-                totalTasksEl.textContent = totalTasks;
-                pendingTasksEl.textContent = pendingTasks;
-                deliveredTasksEl.textContent = deliveredTasks;
-            }
-        }
-
-        // Show notification
-        function showNotification(message, isError = false) {
-            const notification = document.getElementById('notification');
-            const icon = notification.querySelector('i');
-            const text = notification.querySelector('span');
-            text.textContent = message;
-            if (isError) {
-                notification.classList.add('error');
-                icon.className = 'fas fa-exclamation-circle';
-            } else {
-                notification.classList.remove('error');
-                icon.className = 'fas fa-check-circle';
-            }
-            notification.classList.add('show');
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        // Switch tab
-        window.switchTab = function (tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            if (tabName === 'manual') {
-                document.querySelector('.tab-btn:first-child').classList.add('active');
-                document.getElementById('manualTab').classList.add('active');
-            } else {
-                document.querySelector('.tab-btn:last-child').classList.add('active');
-                document.getElementById('parseTab').classList.add('active');
-            }
-        };
-
-        // Toggle amount field based on payment method
-        window.toggleAmountField = function () {
-            const paymentMethod = document.getElementById('paymentMethod').value;
-            const amountField = document.getElementById('amountField');
-            if (paymentMethod === 'COD') {
-                amountField.style.display = 'block';
-            } else {
-                amountField.style.display = 'none';
-                document.getElementById('grandAmount').value = '';
-            }
-        };
-
-        // Parse order details (desktop)
-        window.parseOrderDetails = function () {
-            const orderDetails = document.getElementById('orderDetails').value.trim();
-            if (!orderDetails) {
-                showNotification('Please enter order details!', true);
-                return;
-            }
-            parseOrderData(orderDetails);
-        };
-
-        // Common order parsing function
-        function parseOrderData(orderDetails) {
-            const lines = orderDetails.split('\n');
-            let orderId = '';
-            let customerName = '';
-            let mobileNumber = '';
-            let address = '';
-            let grandAmount = '';
-            let paymentMethod = '';
-            let inAddressSection = false;
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].trim();
-                if (line.includes('Shipping And Billing Address Details')) {
-                    inAddressSection = true;
-                    continue;
-                }
-                if (inAddressSection && (line.includes('Items Details') || line.includes('S.No'))) {
-                    inAddressSection = false;
-                    continue;
-                }
-                if (line.includes('Order Id') || line.includes('Order ID')) {
-                    const parts = line.split('\t');
-                    if (parts.length > 1) {
-                        orderId = parts[1].trim();
-                    }
-                }
-                if (line.includes('Name') && !line.includes('Email') && !line.includes('Customer Details')) {
-                    const parts = line.split('\t');
-                    if (parts.length > 1) {
-                        customerName = parts[1].trim();
-                    }
-                }
-                if (line.includes('Mobile Number')) {
-                    const parts = line.split('\t');
-                    if (parts.length > 1) {
-                        mobileNumber = parts[1].trim().replace(/\D/g, '');
-                    }
-                }
-                if (inAddressSection && line.includes('Address')) {
-                    const parts = line.split('\t');
-                    if (parts.length > 1) {
-                        address = parts[1].trim();
-                    }
-                }
-                if (line.includes('Grand Amount')) {
-                    const parts = line.split('\t');
-                    if (parts.length > 1) {
-                        grandAmount = parts[1].trim().replace(/[^\d.]/g, '');
-                    }
-                }
-                if (line.includes('Payment Method')) {
-                    const parts = line.split('\t');
-                    if (parts.length > 1) {
-                        paymentMethod = parts[1].trim().toUpperCase();
-                    }
-                }
-            }
-            if (!customerName || !mobileNumber || !address) {
-                showNotification('Required information (name, phone, address) not found!', true);
-                return;
-            }
-            const newTask = {
-                orderId,
-                customerName,
-                address,
-                phone: mobileNumber,
-                status: 'pending',
-                grandAmount,
-                paymentMethod,
-                createdAt: new Date().toISOString()
-            };
-            db.ref('deliveryTasks').push(newTask);
-            document.getElementById('orderDetails').value = '';
-            showNotification('Task created successfully from order details!');
-        }
-
-        // Ripple effect on buttons
-        document.addEventListener('click', function (e) {
-            if (e.target.classList.contains('ripple')) {
-                const ripple = document.createElement('span');
-                const rect = e.target.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                const x = e.clientX - rect.left - size / 2;
-                const y = e.clientY - rect.top - size / 2;
-                ripple.style.width = ripple.style.height = size + 'px';
-                ripple.style.left = x + 'px';
-                ripple.style.top = y + 'px';
-                ripple.classList.add('ripple-effect');
-                e.target.appendChild(ripple);
-                setTimeout(() => {
-                    ripple.remove();
-                }, 600);
-            }
-        });
-    });
-</script>
-
+        }); // DOMContentLoaded end
+    </script>
 </body>
 
 </html>
